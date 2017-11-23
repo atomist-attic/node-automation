@@ -1,10 +1,4 @@
 import * as appRoot from "app-root-path";
-import {
-    removeAutowiredOnSoleConstructorCommand,
-    removeUnnecessaryComponentScanCommand,
-} from "./commands/editor/spring/springFixes";
-import { CopyGenerator } from "./commands/generator/common/CopyGenerator";
-import { SpringRepoCreator } from "./commands/generator/spring/SpringRepoCreator";
 import { NodeGenerator } from "./commands/generator/NodeGenerator";
 import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";
 import { initMemoryMonitoring } from "./util/mem";
@@ -38,13 +32,7 @@ export const configuration: any = {
     teamIds: [ "T5964N9B7" ],
     // groups: ["all"],
     commands: [
-        () => removeUnnecessaryComponentScanCommand,
-        () => removeAutowiredOnSoleConstructorCommand,
-        SpringRepoCreator,
         NodeGenerator,
-        // TODO this is generic
-        CopyGenerator,
-        //() => new UpgradeCreatedRepos(ReposWeMadeRepoFinder, AtomistToken),
     ],
     events: [],
     token,
