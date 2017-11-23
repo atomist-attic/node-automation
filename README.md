@@ -1,8 +1,9 @@
-# @atomist/initializr-atomist
+# @atomist/node-automations
 
 [![Build Status](https://travis-ci.org/atomist/initializr-atomist.svg?branch=master)](https://travis-ci.org/atomist/initializr-atomist)
 
-This repository contains the Atomist backend for Spring Initializr.
+This repository contains Atomist automations for Node.js:
+generators, editors and reviewers.
 
 ## Prerequisites
 
