@@ -1,7 +1,7 @@
+import { initMemoryMonitoring } from "@atomist/automation-client/internal/util/memory";
 import * as appRoot from "app-root-path";
 import { NodeGenerator } from "./commands/generator/NodeGenerator";
 import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";
-import { initMemoryMonitoring } from "./util/mem";
 import { secret } from "./util/secrets";
 
 const pj = require(`${appRoot.path}/package.json`);
@@ -15,7 +15,7 @@ const logzioOptions: LogzioOptions = {
     token: secret("logzio.token", process.env.LOGZIO_TOKEN),
 };
 
-// Set uo automation event listeners
+// Set up automation event listeners
 const listeners = [];
 
 // Logz.io will only work in certain environments
@@ -29,17 +29,13 @@ const AtomistToken: string = process.env.ATOMIST_GITHUB_TOKEN || token;
 export const configuration: any = {
     name: pj.name,
     version: pj.version,
-    teamIds: [ "T5964N9B7" ],
-    // groups: ["all"],
+    groups: ["all"],
     commands: [
         NodeGenerator,
     ],
     events: [],
     token,
     listeners,
-    ws: {
-        enabled: true,
-    },
     http: {
         enabled: true,
         auth: {
@@ -51,13 +47,17 @@ export const configuration: any = {
             },
             github: {
                 enabled: false,
-                clientId: "092b3124ced86d5d1569",
-                clientSecret: "71d72f657d4402009bd8d728fc1967939c343793",
-                callbackUrl: "http://localhost:2866",
-                adminOrg: "atomisthq",
             },
         },
         forceSecure: false,
+    },
+    applicationEvents: {
+        enabled: true,
+        teamId: "T29E48P34",
+    },
+    cluster: {
+        enabled: true,
+        workers: 2,
     },
 };
 
