@@ -1,16 +1,22 @@
-import { HandlerContext, Parameter } from "@atomist/automation-client";
-import { CommandHandler } from "@atomist/automation-client/decorators";
+import { HandleCommand, Parameter } from "@atomist/automation-client";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { chainEditors } from "@atomist/automation-client/operations/edit/projectEditorOps";
+import {
+    BaseSeedDrivenGeneratorParameters,
+} from "@atomist/automation-client/operations/generate/BaseSeedDrivenGeneratorParameters";
+import { ProjectPersister } from "@atomist/automation-client/operations/generate/generatorUtils";
+import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";
 import { updatePackageJsonIdentification } from "../editor/node/updatePackageJsonIdentification";
 import { updateReadme } from "../editor/node/updateReadme";
-import { AbstractRepoCreator } from "./common/AbstractRepoCreator";
+
+import { Parameters } from "@atomist/automation-client/decorators";
+import { generatorHandler } from "@atomist/automation-client/operations/generate/generatorToCommand";
 
 /**
  * Creates a GitHub Repo and installs Atomist collaborator if necessary
  */
-@CommandHandler("generate node seed")
-export class NodeGenerator extends AbstractRepoCreator {
+@Parameters()
+export class NodeGeneratorParameters extends BaseSeedDrivenGeneratorParameters {
 
     @Parameter({
         displayName: "App name",
@@ -39,14 +45,27 @@ export class NodeGenerator extends AbstractRepoCreator {
 
     constructor() {
         super();
-        this.sourceOwner = "blove";
-        this.sourceRepo = "typescript-express-starter";
+        this.source.owner = "blove";
+        this.source.repo = "typescript-express-starter";
     }
+}
 
-    public projectEditor(ctx: HandlerContext, params: this): AnyProjectEditor<this> {
-        return chainEditors(
-            updatePackageJsonIdentification(params.appName, params.description, params.version, params.targetOwner),
-            updateReadme(params.appName, params.description),
-        );
-    }
+export function nodeGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<NodeGeneratorParameters> {
+    return generatorHandler(
+        nodeTransform,
+        NodeGeneratorParameters,
+        "springBootGenerator",
+        {
+            intent: "generate node",
+            tags: ["node", "npm", "typescript"],
+            projectPersister,
+        });
+}
+
+function nodeTransform(params: NodeGeneratorParameters): AnyProjectEditor<NodeGeneratorParameters> {
+    return chainEditors(
+        updatePackageJsonIdentification(params.appName, params.target.description,
+            params.version, params.target.owner),
+        updateReadme(params.appName, params.target.description),
+    );
 }

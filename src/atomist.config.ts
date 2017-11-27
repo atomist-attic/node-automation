@@ -1,6 +1,6 @@
 import { initMemoryMonitoring } from "@atomist/automation-client/internal/util/memory";
 import * as appRoot from "app-root-path";
-import { NodeGenerator } from "./commands/generator/NodeGenerator";
+import { nodeGenerator } from "./commands/generator/NodeGenerator";
 import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";
 import { secret } from "./util/secrets";
 
@@ -29,9 +29,10 @@ const AtomistToken: string = process.env.ATOMIST_GITHUB_TOKEN || token;
 export const configuration: any = {
     name: pj.name,
     version: pj.version,
-    groups: ["all"],
+    // groups: ["all"],
+    teamIds: [ "T5964N9B7" ],
     commands: [
-        NodeGenerator,
+        () => nodeGenerator(),
     ],
     events: [],
     token,
