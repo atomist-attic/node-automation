@@ -24,7 +24,6 @@ describe("updatePackageJsonIdentification", () => {
         updatePackageJsonIdentification(name, name, "0.0.0", "a")(p)
             .then(() => {
                 const content = p.findFileSync("package.json").getContentSync();
-                console.log(content);
                 assert(content.includes(name));
                 const parsed = JSON.parse(content);
                 assert(parsed.name === name);
@@ -38,7 +37,6 @@ describe("updatePackageJsonIdentification", () => {
         updatePackageJsonIdentification("somename", "", version, "a")(p)
             .then(() => {
                 const content = p.findFileSync("package.json").getContentSync();
-                console.log(content);
                 assert(content.includes(version));
                 const parsed = JSON.parse(content);
                 assert(parsed.version === version);
@@ -53,7 +51,6 @@ describe("updatePackageJsonIdentification", () => {
         updatePackageJsonIdentification("somename", description, version, "a")(p)
             .then(() => {
                 const content = p.findFileSync("package.json").getContentSync();
-                console.log(content);
                 assert(content.includes(description));
                 const parsed = JSON.parse(content);
                 assert(parsed.description === description);
@@ -68,7 +65,6 @@ describe("updatePackageJsonIdentification", () => {
         updatePackageJsonIdentification("somename", "descr", version, author)(p)
             .then(() => {
                 const content = p.findFileSync("package.json").getContentSync();
-                console.log(content);
                 assert(content.includes(author));
                 const parsed = JSON.parse(content);
                 assert(parsed.author === author);
