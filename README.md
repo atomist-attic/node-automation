@@ -1,9 +1,14 @@
 # @atomist/node-automation
 
+[![npm version](https://badge.fury.io/js/%40atomist%2Fnode-automation.svg)](https://badge.fury.io/js/%40atomist%2Fnode-automation)
 [![Build Status](https://travis-ci.org/atomist/node-automation.svg?branch=master)](https://travis-ci.org/atomist/node-automation)
 
-This repository contains Atomist automations for Node.js:
-generators, editors and reviewers.
+This repository contains Atomist automations for Node.js: generators,
+editors and reviewers.  These automation use
+the [`@atomist/automation-client`][client] node module to implement a
+client that connects to the Atomist API.
+
+[client]: https://github.com/atomist/automation-client-ts (@atomist/automation-client Node Module)
 
 ## Prerequisites
 
