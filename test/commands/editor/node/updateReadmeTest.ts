@@ -1,8 +1,8 @@
 import "mocha";
+import * as assert from "power-assert";
 
 import { SimpleProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
-import * as assert from "power-assert";
 import { updateReadme } from "../../../../src/commands/editor/node/updateReadme";
 
 describe("updateReadme", () => {
@@ -14,33 +14,28 @@ describe("updateReadme", () => {
             .then(edited => {
                 assert(!!edited);
                 assert(edited === p);
-                done();
-            }).catch(done);
+            }).then(() => done(), done);
     });
 
     it("changes name", done => {
-        const p = InMemoryProject.of({path: "README.md", content: SimpleReadme });
+        const p = InMemoryProject.of({ path: "README.md", content: SimpleReadme });
         const name = "thing1";
         const description = "foo";
         updateReadme(name, description)(p)
             .then(() => {
                 const content = p.findFileSync("README.md").getContentSync();
-                console.log(content);
                 assert(content.includes(name));
-                done();
-            }).catch(done);
+            }).then(() => done(), done);
     });
 
     it("adds description", done => {
-        const p = InMemoryProject.of({path: "README.md", content: SimpleReadme });
+        const p = InMemoryProject.of({ path: "README.md", content: SimpleReadme });
         const description = "whatever you say";
         updateReadme("somename", description)(p)
             .then(() => {
                 const content = p.findFileSync("README.md").getContentSync();
-                console.log(content);
                 assert(content.includes(description));
-                done();
-            }).catch(done);
+            }).then(() => done(), done);
     });
 
 });
