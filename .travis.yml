@@ -1,0 +1,35 @@
+dist: trusty
+sudo: false
+language: node_js
+node_js:
+- 8.7.0
+branches:
+  except:
+  - "/\\+travis\\.\\d+$/"
+env:
+  global:
+  - NPM_REGISTRY=https://atomist.jfrog.io/atomist/api/npm/npm-dev-local
+  - secure: bz3asJvKfwgpTEit35x81c8lNJI1KBw+FaJoWMkaWtdXabgiSdOM1bnZz9rvsu3d4Gg3gcn6BvLmHdDi2N1gjAR2RIIE6zUbafibwb/Chs77Bhb00l2fbaONU0/IzhC9NiUzuS0ZFaCloDDmw53SiDSIIfo1z+2VT+5TYZJ7TIpRZQi+AtT3GYweViwa2ae9JcH/FYnpLAaV+Rzh6Sm6kE+l2GAFnxRok8oPA/r7ZQj01QVWidDPGPWkihb93C81ceIYyhyAFmjiN+NNevuRFgvsuISMjsUHNHfDuZKe/QqRCYT0TrqROdjhHeoANwussk045QQeHoS23f7rjB2F/KRDJR8PQ+MQE70ZVRf+AE3bogg4ek3gLGPNGyj4r7gEG9rd66jmSymsdLZc8V7kk5wNLU2lmRcJqaMIka0tTxBEjoNmmgYj0vPnwkytLBc8nBFciXoRKhwPolvHmSTlTmHPlb+QH5o1ufCZWK5+JrwvsWDysLdXBwXxRTVFM3DS+wrTk4M+ZxElrfECA9Ucq5KJd4ZWixarW90OxRJJafHlRtU25R09enU2KXZBoya3yqXnFaUI4jyOQ7NYMsP3CqPvrtgFmXn9kHNhIbuejLvgq3NLtLaOuijxy7FlMgWeduPrPdHDUd9q6Nrx+ip+8/gm9padq6FZ/H3ivRUmc8E=
+before_install:
+- openssl aes-256-cbc -K $encrypted_f1d3e3be3628_key -iv $encrypted_f1d3e3be3628_iv
+  -in scripts/.npmrc.enc -out $HOME/.npmrc -d
+script: bash scripts/travis-build.bash
+notifications:
+  email: false
+  webhooks:
+    urls:
+    - https://webhook.atomist.com/atomist/travis/teams/T29E48P34
+    on_success: always
+    on_failure: always
+    on_start: always
+    on_cancel: always
+    on_error: always
+cache:
+  directories:
+  - "$HOME/.npm"
+deploy:
+  provider: releases
+  api_key: "$GITHUB_TOKEN"
+  on:
+    tags: true
+    condition: "$TRAVIS_TAG =~ ^[0-9]+\\.[0-9]+\\.[0-9]+(-(m|rc)\\.[0-9]+)?$"
