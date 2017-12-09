@@ -7,6 +7,13 @@ branches:
   except:
   - "/\\+travis\\.\\d+$/"
   - "/^\\d+\\.\\d+\\.\\d+-\\d+$/"
+addons:
+  apt:
+    sources:
+    - sourceline: "deb http://packages.cloudfoundry.org/debian stable main"
+      key_url: "https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key"
+    packages:
+    - cf-cli
 env:
   global:
   - NPM_REGISTRY=https://atomist.jfrog.io/atomist/api/npm/npm-dev-local
@@ -15,6 +22,7 @@ env:
   - secure: bX/ZOQQEI+mHQwwwGRTDxU0/1JB0LpaNY794IVMYKzjjtoeLT1CQhAg6oPmcLdsDkXFh0U93o/hOoyGK+Esg8X5lPtEGGghxMrsamLEvYmYSRrdUJtFk8KcRHk6BVmbKs57JRzxVm/bUfzo24Nrr+wkWSQKNp6DjVhjr/o64rzkLA6UKoLQY7wuSVWd0FrtUDFxiZsVinqXEcTsbF0FJe5tor1RSW4qzQGEuRb5PEltsFFz9DNt5UkHgQvSvWVP7Lec7ktA60O+uL+G8xfTqj4HK7Z+COwIy3SyYdTM4KJzNaHPPAc2cAUJhH7xVAg+TpZ0B2AhwaQhaTdo6giho57gYjXbQ5OtDRSDYsOqg8BIsZu1e3THwqmLrWkCFeW21U72ix13O2QSC3vaTkhvln6VSlih23dJmRt3t8h84wYv+CvVXvedJc0gOTrjDppAYtkNJTVxZGUWDuB7Sknt5EJqImSvr7sgaek2URhLYyogujpvImgOY/AcDhs5yPYWfrhh2Wv/VzBWqVKz8V1Yy6Y9onz9ITlPqEoFCUIJo9C3jHCDBTub/2C/DHyzWHrIAaCw7FLHqbOKvxyXLkPIegQoySBhs2StGRQs71qeerKTIVxjkCDWamfNj+rEVeyvhCl3QsSD4xQ3uLTkoFMt+FRuWUyL5UfVvX5T2SEusHko=
   - CF_ORG=atomist
 before_install:
+- "rm -f $HOME/.npm/_logs/*-debug.log"
 - openssl aes-256-cbc -K $encrypted_f1d3e3be3628_key -iv $encrypted_f1d3e3be3628_iv
   -in scripts/.npmrc.enc -out $HOME/.npmrc -d
 script: bash scripts/travis-build.bash
