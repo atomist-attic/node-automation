@@ -1,8 +1,8 @@
 import { Configuration } from "@atomist/automation-client";
 import { initMemoryMonitoring } from "@atomist/automation-client/internal/util/memory";
 
-import * as appRoot from "app-root-path";
 import * as config from "config";
+import * as appRoot from "app-root-path";
 
 import { nodeGenerator } from "./commands/generator/NodeGenerator";
 import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";
