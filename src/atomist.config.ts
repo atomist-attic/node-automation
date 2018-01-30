@@ -12,7 +12,7 @@ import { secret } from "./util/secrets";
 const pj = require(`${appRoot.path}/package.json`);
 
 const token = secret("github.token", process.env.GITHUB_TOKEN);
-const notLocal = process.env.NODE_ENV == "production" || process.env.NODE_ENV === "staging";
+const notLocal = process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging";
 
 const logzioOptions: LogzioOptions = {
     applicationId: secret("applicationId"),
