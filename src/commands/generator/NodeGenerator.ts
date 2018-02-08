@@ -50,8 +50,8 @@ export class NodeGeneratorParameters extends BaseSeedDrivenGeneratorParameters {
     }
 }
 
-export function nodeGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<NodeGeneratorParameters> {
-    return generatorHandler(
+export function nodeGenerator(context: HandlerContext, projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<NodeGeneratorParameters> {
+    return generatorHandler(context, 
         nodeTransform,
         NodeGeneratorParameters,
         "springBootGenerator",
