@@ -54,7 +54,7 @@ export function nodeGenerator(projectPersister: ProjectPersister = GitHubProject
     return generatorHandler(
         nodeTransform,
         NodeGeneratorParameters,
-        "nodeGenerator",
+        "springBootGenerator",
         {
             intent: "generate node",
             tags: ["node", "npm", "typescript"],
