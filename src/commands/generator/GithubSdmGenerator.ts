@@ -11,6 +11,8 @@ import { updateReadme } from "../editor/node/updateReadme";
 
 import { Parameters } from "@atomist/automation-client/decorators";
 import { generatorHandler } from "@atomist/automation-client/operations/generate/generatorToCommand";
+import { updateAtomistTeam } from "../editor/node/updateAtomistTeam";
+import { updatePackageLock } from "../editor/node/updatePackageLock";
 
 /**
  * Creates a GitHub Repo and installs Atomist collaborator if necessary
@@ -26,10 +28,10 @@ export class NodeGeneratorParameters extends BaseSeedDrivenGeneratorParameters {
         " alphanumeric, -, and _ characters, or `${projectName}` to use the project name",
         minLength: 1,
         maxLength: 50,
-        required: true,
+        required: false,
         order: 51,
     })
-    public appName: string;
+    public appName: string = "software-delivery-machine";
 
     @Parameter({
         displayName: "Version",
@@ -45,18 +47,18 @@ export class NodeGeneratorParameters extends BaseSeedDrivenGeneratorParameters {
 
     constructor() {
         super();
-        this.source.owner = "blove";
-        this.source.repo = "typescript-express-starter";
+        this.source.owner = "atomist";
+        this.source.repo = "github-sdm";
     }
 }
 
-export function nodeGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<NodeGeneratorParameters> {
+export function sdmGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<NodeGeneratorParameters> {
     return generatorHandler(
         nodeTransform,
         NodeGeneratorParameters,
-        "springBootGenerator",
+        "sdmGenerator",
         {
-            intent: "generate node",
+            intent: ["create software delivery machine", "create sdm"],
             tags: ["node", "npm", "typescript"],
             projectPersister,
         });
@@ -65,7 +67,9 @@ export function nodeGenerator(projectPersister: ProjectPersister = GitHubProject
 function nodeTransform(params: NodeGeneratorParameters): AnyProjectEditor<NodeGeneratorParameters> {
     return chainEditors(
         updatePackageJsonIdentification(params.appName, params.target.description,
-            params.version, params.target.owner),
+            params.version, params.target.owner, params.target),
         updateReadme(params.appName, params.target.description),
+        updateAtomistTeam,
+        updatePackageLock,
     );
 }

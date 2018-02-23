@@ -1,4 +1,4 @@
-import { HandleCommand, Parameter } from "@atomist/automation-client";
+import { HandleCommand, HandlerContext, MappedParameter, MappedParameters, Parameter } from "@atomist/automation-client";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { chainEditors } from "@atomist/automation-client/operations/edit/projectEditorOps";
 import {
@@ -52,20 +52,20 @@ export class NodeGeneratorParameters extends BaseSeedDrivenGeneratorParameters {
 
 export function nodeGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<NodeGeneratorParameters> {
     return generatorHandler(
-        nodeTransform,
+        sdmTransform,
         NodeGeneratorParameters,
         "nodeGenerator",
         {
             intent: "generate node",
-            tags: ["node", "npm", "typescript"],
+            tags: ["atomist", "sdm", "typescript"],
             projectPersister,
         });
 }
 
-function nodeTransform(params: NodeGeneratorParameters): AnyProjectEditor<NodeGeneratorParameters> {
+function sdmTransform(params: NodeGeneratorParameters, ctx: HandlerContext): AnyProjectEditor<NodeGeneratorParameters> {
     return chainEditors(
         updatePackageJsonIdentification(params.appName, params.target.description,
-            params.version, params.target.owner),
+            params.version, params.target.owner, params.target),
         updateReadme(params.appName, params.target.description),
     );
 }

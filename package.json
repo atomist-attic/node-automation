@@ -1,6 +1,6 @@
 {
   "name": "@atomist/node-automation",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Atomist automations for Node.js",
   "author": "Atomist",
   "license": "Apache-2.0",
@@ -73,7 +73,7 @@
     "compile:ts": "tsc --project .",
     "fmt": "tsfmt --replace",
     "git:info": "atomist git",
-    "gql:gen": "gql-gen --file node_modules/@atomist/automation-client/graph/schema.cortex.json --template typescript --no-schema --out src/typings '{graphql,src}/**/*.graphql'",
+    "gql:gen": "gql-gen --file node_modules/@atomist/automation-client/graph/schema.cortex.json --template typescript --no-schema --out src/typings/types.ts '{graphql,src}/**/*.graphql'",
     "lint": "tslint --format verbose --project . --exclude '{build,node_modules}/**' '**/*.ts'",
     "lint:fix": "npm run lint -- --fix",
     "start": "atomist start --no-install --no-compile",

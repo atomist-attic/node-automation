@@ -1,0 +1,15 @@
+query PersonByChatId($chatId: String!){
+    ChatId(id: $chatId) {
+        id
+        person @required {
+            forename
+            surname
+            emails {
+                address
+            }
+            gitHubId {
+                login
+            }
+        }
+    }
+}
