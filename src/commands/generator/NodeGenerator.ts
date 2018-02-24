@@ -1,9 +1,7 @@
-import { HandleCommand, HandlerContext, MappedParameter, MappedParameters, Parameter } from "@atomist/automation-client";
+import { HandleCommand, HandlerContext, Parameter } from "@atomist/automation-client";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { chainEditors } from "@atomist/automation-client/operations/edit/projectEditorOps";
-import {
-    BaseSeedDrivenGeneratorParameters,
-} from "@atomist/automation-client/operations/generate/BaseSeedDrivenGeneratorParameters";
+import { BaseSeedDrivenGeneratorParameters, } from "@atomist/automation-client/operations/generate/BaseSeedDrivenGeneratorParameters";
 import { ProjectPersister } from "@atomist/automation-client/operations/generate/generatorUtils";
 import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";
 import { updatePackageJsonIdentification } from "../editor/node/updatePackageJsonIdentification";

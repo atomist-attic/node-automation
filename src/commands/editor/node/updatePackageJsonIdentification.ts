@@ -5,10 +5,10 @@ import { PersonByChatId } from "../../../typings/types";
 export function updatePackageJsonIdentification(appName: string,
                                                 description: string,
                                                 version: string,
-                                                chatId: string,
+                                                screenName: string,
                                                 target: { owner: string, repo: string }) {
     return async (project, context) => {
-        const author = await nameAuthor(context, chatId);
+        const author = await nameAuthor(context, screenName);
         logger.info("Updating JSON. Author is " + author);
 
         return doWithJson(project, "package.json", pkg => {
@@ -29,9 +29,9 @@ export function updatePackageJsonIdentification(appName: string,
     };
 }
 
-async function nameAuthor(ctx: HandlerContext, chatId: string): Promise<string> {
+async function nameAuthor(ctx: HandlerContext, screenName: string): Promise<string> {
     const personResult: PersonByChatId.Query = await ctx.graphClient.executeQueryFromFile(
-        "graphql/PersonQuery", {chatId})
+        "graphql/PersonQuery", {screenName})
         .catch(err => logger.warn("Unable to retrieve person: " + err));
     if (!personResult || !personResult.ChatId || personResult.ChatId.length === 0 || !personResult.ChatId[0].person) {
         logger.info("No person; defaulting author to blank");

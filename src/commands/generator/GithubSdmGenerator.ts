@@ -1,4 +1,4 @@
-import { HandleCommand, Parameter } from "@atomist/automation-client";
+import { HandleCommand, MappedParameter, MappedParameters, Parameter } from "@atomist/automation-client";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { chainEditors } from "@atomist/automation-client/operations/edit/projectEditorOps";
 import {
@@ -18,7 +18,7 @@ import { updatePackageLock } from "../editor/node/updatePackageLock";
  * Creates a GitHub Repo and installs Atomist collaborator if necessary
  */
 @Parameters()
-export class NodeGeneratorParameters extends BaseSeedDrivenGeneratorParameters {
+export class SdmGeneratorParameters extends BaseSeedDrivenGeneratorParameters {
 
     @Parameter({
         displayName: "App name",
@@ -45,6 +45,9 @@ export class NodeGeneratorParameters extends BaseSeedDrivenGeneratorParameters {
     })
     public version: string = "0.1.0";
 
+    @MappedParameter(MappedParameters.SlackUserName)
+    public screenName: string;
+
     constructor() {
         super();
         this.source.owner = "atomist";
@@ -52,10 +55,10 @@ export class NodeGeneratorParameters extends BaseSeedDrivenGeneratorParameters {
     }
 }
 
-export function sdmGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<NodeGeneratorParameters> {
+export function sdmGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<SdmGeneratorParameters> {
     return generatorHandler(
         nodeTransform,
-        NodeGeneratorParameters,
+        SdmGeneratorParameters,
         "sdmGenerator",
         {
             intent: ["create software delivery machine", "create sdm"],
@@ -64,10 +67,10 @@ export function sdmGenerator(projectPersister: ProjectPersister = GitHubProjectP
         });
 }
 
-function nodeTransform(params: NodeGeneratorParameters): AnyProjectEditor<NodeGeneratorParameters> {
+function nodeTransform(params: SdmGeneratorParameters): AnyProjectEditor<SdmGeneratorParameters> {
     return chainEditors(
         updatePackageJsonIdentification(params.appName, params.target.description,
-            params.version, params.target.owner, params.target),
+            params.version, params.screenName, params.target),
         updateReadme(params.appName, params.target.description),
         updateAtomistTeam,
         updatePackageLock,
