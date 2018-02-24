@@ -67,4 +67,6 @@ export const configuration: Configuration = {
 };
 (configuration as any).groups = config.get("groups");
 
-initMemoryMonitoring();
+if (!config.get("skipMemoryMonitoring")) {
+    initMemoryMonitoring();
+}
