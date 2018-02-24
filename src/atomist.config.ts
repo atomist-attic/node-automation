@@ -6,7 +6,6 @@ import * as config from "config";
 
 import { sdmGenerator } from "./commands/generator/GithubSdmGenerator";
 import { nodeGenerator } from "./commands/generator/NodeGenerator";
-import { LogzioOptions } from "./util/logzio";
 import { secret } from "./util/secrets";
 
 // tslint:disable-next-line:no-var-requires
@@ -14,12 +13,6 @@ const pj = require(`${appRoot.path}/package.json`);
 
 const token = secret("github.token", process.env.GITHUB_TOKEN);
 const notLocal = process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging";
-
-const logzioOptions: LogzioOptions = {
-    applicationId: secret("applicationId"),
-    environmentId: secret("environmentId"),
-    token: secret("logzio.token", process.env.LOGZIO_TOKEN),
-};
 
 export const configuration: Configuration = {
     name: pj.name,
