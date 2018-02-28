@@ -1,10 +1,10 @@
 {
   "endpoints": {
-    "api": "https://automation.atomist.com/registration",
-    "graphql": "https://automation.atomist.com/graphql/team"
+    "api":"https://automation-staging.atomist.services/registration",
+    "graphql": "https://automation-staging.atomist.services/graphql/team"
   },
   "groups": null,
-  "teamIds": "T1JVCMVH7",
+  "teamIds": "T1L0VDKJP",
   "policy": null,
   "http": {
     "auth": {
