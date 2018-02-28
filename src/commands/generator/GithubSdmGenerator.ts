@@ -1,7 +1,9 @@
-import { HandleCommand, HandlerContext, Parameter } from "@atomist/automation-client";
+import { HandleCommand, MappedParameter, MappedParameters, Parameter } from "@atomist/automation-client";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { chainEditors } from "@atomist/automation-client/operations/edit/projectEditorOps";
-import { BaseSeedDrivenGeneratorParameters } from "@atomist/automation-client/operations/generate/BaseSeedDrivenGeneratorParameters";
+import {
+    BaseSeedDrivenGeneratorParameters,
+} from "@atomist/automation-client/operations/generate/BaseSeedDrivenGeneratorParameters";
 import { ProjectPersister } from "@atomist/automation-client/operations/generate/generatorUtils";
 import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";
 import { updatePackageJsonIdentification } from "../editor/node/updatePackageJsonIdentification";
@@ -9,12 +11,14 @@ import { updateReadme } from "../editor/node/updateReadme";
 
 import { Parameters } from "@atomist/automation-client/decorators";
 import { generatorHandler } from "@atomist/automation-client/operations/generate/generatorToCommand";
+import { updateAtomistTeam } from "../editor/node/updateAtomistTeam";
+import { updatePackageLock } from "../editor/node/updatePackageLock";
 
 /**
  * Creates a GitHub Repo and installs Atomist collaborator if necessary
  */
 @Parameters()
-export class NodeGeneratorParameters extends BaseSeedDrivenGeneratorParameters {
+export class SdmGeneratorParameters extends BaseSeedDrivenGeneratorParameters {
 
     @Parameter({
         displayName: "App name",
@@ -24,10 +28,10 @@ export class NodeGeneratorParameters extends BaseSeedDrivenGeneratorParameters {
         " alphanumeric, -, and _ characters, or `${projectName}` to use the project name",
         minLength: 1,
         maxLength: 50,
-        required: true,
+        required: false,
         order: 51,
     })
-    public appName: string;
+    public appName: string = "software-delivery-machine";
 
     @Parameter({
         displayName: "Version",
@@ -41,29 +45,34 @@ export class NodeGeneratorParameters extends BaseSeedDrivenGeneratorParameters {
     })
     public version: string = "0.1.0";
 
+    @MappedParameter(MappedParameters.SlackUserName)
+    public screenName: string;
+
     constructor() {
         super();
-        this.source.owner = "blove";
-        this.source.repo = "typescript-express-starter";
+        this.source.owner = "atomist";
+        this.source.repo = "github-sdm";
     }
 }
 
-export function nodeGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<NodeGeneratorParameters> {
+export function sdmGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<SdmGeneratorParameters> {
     return generatorHandler(
-        sdmTransform,
-        NodeGeneratorParameters,
-        "nodeGenerator",
+        nodeTransform,
+        SdmGeneratorParameters,
+        "sdmGenerator",
         {
-            intent: "generate node",
-            tags: ["atomist", "sdm", "typescript"],
+            intent: ["create software delivery machine", "create sdm"],
+            tags: ["node", "npm", "typescript"],
             projectPersister,
         });
 }
 
-function sdmTransform(params: NodeGeneratorParameters, ctx: HandlerContext): AnyProjectEditor<NodeGeneratorParameters> {
+function nodeTransform(params: SdmGeneratorParameters): AnyProjectEditor<SdmGeneratorParameters> {
     return chainEditors(
         updatePackageJsonIdentification(params.appName, params.target.description,
-            params.version, params.target.owner, params.target),
+            params.version, params.screenName, params.target),
         updateReadme(params.appName, params.target.description),
+        updateAtomistTeam,
+        updatePackageLock,
     );
 }

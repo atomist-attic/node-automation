@@ -14,7 +14,7 @@ import {
     AutomationEventListener,
     AutomationEventListenerSupport,
 } from "@atomist/automation-client/server/AutomationEventListener";
-import { MessageOptions } from "@atomist/automation-client/spi/message/MessageClient";
+import { Destination, MessageOptions } from "@atomist/automation-client/spi/message/MessageClient";
 import { SlackMessage } from "@atomist/slack-messages/SlackMessages";
 import * as appRoot from "app-root-path";
 import { createLogger } from "logzio-nodejs";
@@ -29,7 +29,7 @@ const pj = require(`${appRoot.path}/package.json`);
 export class LogzioAutomationEventListener extends AutomationEventListenerSupport
     implements AutomationEventListener {
 
-    private logzio;
+    private logzio: any;
 
     constructor(options: LogzioOptions) {
         super();
@@ -48,51 +48,51 @@ export class LogzioAutomationEventListener extends AutomationEventListenerSuppor
 
     public commandSuccessful(payload: CommandInvocation,
                              ctx: HandlerContext,
-                             result: HandlerResult) {
-        return Promise.resolve(this.sendOperation("CommandHandler", "operation", "command-handler",
-            payload.name, "successful", result));
-
+                             result: HandlerResult): Promise<any> {
+        this.sendOperation("CommandHandler", "operation", "command-handler",
+            payload.name, "successful", result);
+        return Promise.resolve();
     }
 
     public commandFailed(payload: CommandInvocation,
                          ctx: HandlerContext,
-                         err: any) {
-        return Promise.resolve(this.sendOperation("CommandHandler", "operation", "command-handler",
-            payload.name, "failed", err));
+                         err: any): Promise<any> {
+        this.sendOperation("CommandHandler", "operation", "command-handler",
+            payload.name, "failed", err);
+        return Promise.resolve();
     }
 
     public eventIncoming(payload: EventIncoming) {
-        return Promise.resolve(
-            this.sendEvent("Incoming event", "event", payload));
+        this.sendEvent("Incoming event", "event", payload);
     }
 
     public eventStarting(payload: EventFired<any>,
                          ctx: HandlerContext) {
-        return Promise.resolve(this.sendOperation("EventHandler", "operation", "event-handler",
-            payload.extensions.operationName, "starting"));
+        this.sendOperation("EventHandler", "operation", "event-handler",
+            payload.extensions.operationName, "starting");
     }
 
     public eventSuccessful(payload: EventFired<any>,
                            ctx: HandlerContext,
-                           result: HandlerResult[]) {
-        return Promise.resolve(this.sendOperation("EventHandler", "operation", "event-handler",
-            payload.extensions.operationName, "successful", result));
+                           result: HandlerResult[]): Promise<any> {
+        this.sendOperation("EventHandler", "operation", "event-handler",
+            payload.extensions.operationName, "successful", result);
+        return Promise.resolve();
     }
 
     public eventFailed(payload: EventFired<any>,
-                       ctx: HandlerContext, err: any) {
-        return Promise.resolve(this.sendOperation("EventHandler", "operation", "event-handler",
-            payload.extensions.operationName, "failed", err));
+                       ctx: HandlerContext, err: any): Promise<any> {
+        this.sendOperation("EventHandler", "operation", "event-handler",
+            payload.extensions.operationName, "failed", err);
+        return Promise.resolve();
     }
 
-    public messageSent(message: string | SlackMessage,
-                       userNames: string | string[],
-                       channelName: string | string[],
-                       options?: MessageOptions) {
+    public messageSent(message: any,
+                       destinations: Destination | Destination[],
+                       options: MessageOptions, ctx: HandlerContext) {
         this.sendEvent("Outgoing message", "message", {
             message,
-            "user-names": userNames,
-            "channel-names": channelName,
+            destinations,
             options,
         });
     }
@@ -166,12 +166,13 @@ export class LogzioAutomationEventListener extends AutomationEventListenerSuppor
                 "version": pj.version,
                 "environment": options.environmentId,
                 "application-id": options.applicationId,
+                "process-id": process.pid,
             },
         };
         // create the logzio event logger
         this.logzio = createLogger(logzioOptions);
 
-        logzioWinstonTransport.prototype.log = function(level, msg, meta, callback) {
+        logzioWinstonTransport.prototype.log = function(level: any, msg: any, meta: any, callback: any) {
 
             if (typeof msg !== "string" && typeof msg !== "object") {
                 msg = { message: this.safeToString(msg) };
@@ -194,7 +195,6 @@ export class LogzioAutomationEventListener extends AutomationEventListenerSuppor
                     "team-name": nsp.get().teamName,
                     "correlation-id": nsp.get().correlationId,
                     "invocation-id": nsp.get().invocationId,
-                    "process-id": process.pid,
                 });
             } else {
                 _assign(msg, {

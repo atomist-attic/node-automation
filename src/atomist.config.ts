@@ -4,8 +4,9 @@ import { initMemoryMonitoring } from "@atomist/automation-client/internal/util/m
 import * as appRoot from "app-root-path";
 import * as config from "config";
 
+import { sdmGenerator } from "./commands/generator/GithubSdmGenerator";
 import { nodeGenerator } from "./commands/generator/NodeGenerator";
-import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";
+import { LogzioOptions } from "./util/logzio";
 import { secret } from "./util/secrets";
 
 // tslint:disable-next-line:no-var-requires
@@ -29,6 +30,7 @@ export const configuration: Configuration = {
     token,
     commands: [
         () => nodeGenerator(),
+        () => sdmGenerator(),
     ],
     events: [],
     listeners: [],
