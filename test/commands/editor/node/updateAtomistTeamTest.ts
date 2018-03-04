@@ -1,8 +1,8 @@
+import { HandlerContext } from "@atomist/automation-client";
+import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 import "mocha";
 import * as assert from "power-assert";
-import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 import { updateAtomistTeam } from "../../../../src/commands/editor/node/updateAtomistTeam";
-import { HandlerContext } from "@atomist/automation-client";
 
 describe("update Atomist Team", () => {
 
@@ -10,7 +10,7 @@ describe("update Atomist Team", () => {
         teamId: "TEAMYAY",
     } as any as HandlerContext;
 
-    it("changes the team", (done) => {
+    it("changes the team", done => {
         const p = InMemoryProject.of({
             path: "src/atomist.config.ts",
             content:
@@ -28,7 +28,7 @@ export const configuration: Configuration = {
         () => javaAffirmationEditor,
     ]),
 };
-`
+`,
         });
         updateAtomistTeam(p, fakeContext)
             .then(
@@ -41,7 +41,7 @@ export const configuration: Configuration = {
             .then(() => done(), done);
     });
 
-    it("changes the team when it's multiline", (done) => {
+    it("changes the team when it's multiline", done => {
         const p = InMemoryProject.of({
             path: "src/atomist.config.ts",
             content:
@@ -63,7 +63,7 @@ export const configuration: Configuration = {
         () => javaAffirmationEditor,
     ]),
 };
-`
+`,
         });
         updateAtomistTeam(p, fakeContext)
             .then(
@@ -76,4 +76,3 @@ export const configuration: Configuration = {
             .then(() => done(), done);
     });
 });
-
