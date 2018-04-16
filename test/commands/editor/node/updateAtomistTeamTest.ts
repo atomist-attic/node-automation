@@ -1,6 +1,5 @@
 import { HandlerContext } from "@atomist/automation-client";
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
-import "mocha";
 import * as assert from "power-assert";
 import { updateAtomistTeam } from "../../../../src/commands/editor/node/updateAtomistTeam";
 
@@ -38,7 +37,7 @@ export const configuration: Configuration = {
                 assert(content.includes(`teamIds: ["TEAMYAY"], // <-- run @atomist pwd in your slack team to obtain the team id`),
                     "content: " + content);
             })
-            .then(() => done(), done);
+            .then(done, done);
     });
 
     it("changes the team when it's multiline", done => {
@@ -73,6 +72,6 @@ export const configuration: Configuration = {
                 assert(content.includes(`teamIds: ["TEAMYAY"],\n    commands:`),
                     "content: " + content);
             })
-            .then(() => done(), done);
+            .then(done, done);
     });
 });

@@ -4,13 +4,13 @@ import { logger } from "@atomist/automation-client/internal/util/logger";
 import { enableDefaultScanning } from "@atomist/automation-client/scan";
 import {
     loadSecretsFromCloudFoundryEnvironment,
-    loadSecretsFromConfigServer,
 } from "./util/secrets";
 
+// tslint:disable:no-floating-promises
 loadSecretsFromCloudFoundryEnvironment()
-    .then(() => {
-        const configuration = enableDefaultScanning(findConfiguration());
+    .then(async () => {
+        const configuration = enableDefaultScanning(await findConfiguration());
         const node = automationClient(configuration);
-        node.run()
+        return node.run()
             .then(() => logger.info("Successfully completed startup of process '%s'", process.pid));
     });

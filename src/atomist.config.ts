@@ -15,6 +15,7 @@ const pj = require(`${appRoot.path}/package.json`);
 const token = secret("github.token", process.env.GITHUB_TOKEN);
 const notLocal = process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging";
 
+// tslint:disable:no-unused-variable
 const logzioOptions: LogzioOptions = {
     applicationId: secret("applicationId"),
     environmentId: secret("environmentId"),
@@ -29,8 +30,8 @@ export const configuration: Configuration = {
     teamIds: config.get("teamIds"),
     token,
     commands: [
-        () => nodeGenerator(),
-        () => sdmGenerator(),
+        nodeGenerator,
+        sdmGenerator,
     ],
     events: [],
     listeners: [],

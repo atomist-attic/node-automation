@@ -1,4 +1,3 @@
-import "mocha";
 import * as assert from "power-assert";
 
 import { SimpleProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
@@ -14,7 +13,7 @@ describe("updateReadme", () => {
             .then(edited => {
                 assert(!!edited);
                 assert(edited === p);
-            }).then(() => done(), done);
+            }).then(done, done);
     });
 
     it("changes name", done => {
@@ -25,7 +24,7 @@ describe("updateReadme", () => {
             .then(() => {
                 const content = p.findFileSync("README.md").getContentSync();
                 assert(content.includes(name));
-            }).then(() => done(), done);
+            }).then(done, done);
     });
 
     it("adds description", done => {
@@ -35,7 +34,7 @@ describe("updateReadme", () => {
             .then(() => {
                 const content = p.findFileSync("README.md").getContentSync();
                 assert(content.includes(description));
-            }).then(() => done(), done);
+            }).then(done, done);
     });
 
 });

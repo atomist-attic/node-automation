@@ -51,7 +51,7 @@ export class SdmGeneratorParameters extends BaseSeedDrivenGeneratorParameters {
     constructor() {
         super();
         this.source.owner = "atomist";
-        this.source.repo = "github-sdm";
+        this.source.repo = "sample-sdm";
         this.target.description = "an Atomist automation for software delivery";
     }
 }

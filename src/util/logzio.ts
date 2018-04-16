@@ -15,7 +15,6 @@ import {
     AutomationEventListenerSupport,
 } from "@atomist/automation-client/server/AutomationEventListener";
 import { Destination, MessageOptions } from "@atomist/automation-client/spi/message/MessageClient";
-import { SlackMessage } from "@atomist/slack-messages/SlackMessages";
 import * as appRoot from "app-root-path";
 import { createLogger } from "logzio-nodejs";
 import * as serializeError from "serialize-error";
@@ -172,6 +171,7 @@ export class LogzioAutomationEventListener extends AutomationEventListenerSuppor
         // create the logzio event logger
         this.logzio = createLogger(logzioOptions);
 
+        // tslint:disable:no-parameter-reassignment
         logzioWinstonTransport.prototype.log = function(level: any, msg: any, meta: any, callback: any) {
 
             if (typeof msg !== "string" && typeof msg !== "object") {

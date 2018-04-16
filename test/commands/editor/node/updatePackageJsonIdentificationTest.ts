@@ -1,4 +1,3 @@
-import "mocha";
 
 import { HandlerContext } from "@atomist/automation-client";
 import { SimpleProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
