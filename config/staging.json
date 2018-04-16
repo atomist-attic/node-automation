@@ -1,6 +1,8 @@
 {
-  "groups": ["all"],
-  "teamIds": null,
+  "groups": [
+    "all"
+  ],
+  "teamIds": [],
   "policy": "durable",
   "http": {
     "auth": {
