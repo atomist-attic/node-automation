@@ -11,7 +11,7 @@ export function updatePackageJsonIdentification(
 
     return async (project, context) => {
         const author = await nameAuthor(context, screenName);
-        logger.info("Updating JSON. Author is " + author);
+        logger.debug("Updating JSON. Author is " + author);
 
         return doWithJson(project, "package.json", pkg => {
             const repoUrl = `https://github.com/${target.owner}/${target.repo}`;
@@ -32,8 +32,10 @@ export function updatePackageJsonIdentification(
 }
 
 async function nameAuthor(ctx: HandlerContext, screenName: string): Promise<string> {
-    const personResult: PersonByChatId.Query = await ctx.graphClient.executeQueryFromFile(
-        "graphql/PersonQuery", { screenName })
+    const personResult: PersonByChatId.Query = await ctx.graphClient.query({
+        name: "person",
+        variables: { screenName },
+    })
         .catch(err => logger.warn("Unable to retrieve person: " + err));
     if (!personResult || !personResult.ChatId || personResult.ChatId.length === 0 || !personResult.ChatId[0].person) {
         logger.info("No person; defaulting author to blank");
