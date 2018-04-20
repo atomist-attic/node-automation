@@ -104,7 +104,7 @@ message to the Atomist bot, e.g., `@atomist team`, in Slack.  The
 `read:org` and `repo` scopes.
 
 ```console
-$ kubectl create secret --namespace=node-automation generic automation \
+$ kubectl create secret generic automation \
     --from-literal=config='{"teamIds":["TEAM_ID"],"token":"TOKEN"}'
 ```
 
