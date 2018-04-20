@@ -8,9 +8,9 @@ import { PersonByChatId } from "../../../../src/typings/types";
 
 describe("updatePackageJsonIdentification", () => {
 
-    const target = { owner: "org", repo: "repo-yoyo"};
+    const target = { owner: "org", repo: "repo-yoyo" };
 
-    const fakeQueryResult: PersonByChatId.Query = { ChatId: [{person: { forename: "Rod", surname: "Johnson"}}]};
+    const fakeQueryResult: PersonByChatId.Query = { ChatId: [{ person: { forename: "Rod", surname: "Johnson" } }] };
 
     const fakeContext: HandlerContext = {
         graphClient: {
@@ -18,68 +18,53 @@ describe("updatePackageJsonIdentification", () => {
         },
     } as HandlerContext;
 
-    it("doesn't edit empty project", done => {
+    it("doesn't edit empty project", async () => {
         const p = new InMemoryProject();
-        const sim: SimpleProjectEditor = updatePackageJsonIdentification("x", "y", "v", "a", target);
-        sim(p, fakeContext, null)
-            .then(edited => {
-                assert(!!edited);
-                assert(edited === p);
-                done();
-            }).catch(done);
+        const sim: SimpleProjectEditor = updatePackageJsonIdentification("y", "v", "a", target);
+        const edited = await sim(p, fakeContext, null);
+        assert(!!edited);
+        assert(edited === p);
     });
 
-    it("changes name", done => {
-        const p = InMemoryProject.of({path: "package.json", content: SimplePackageJson });
-        const name = "thing1";
-        updatePackageJsonIdentification(name, name, "0.0.0", "a", target)(p, fakeContext)
-            .then(() => {
-                const content = p.findFileSync("package.json").getContentSync();
-                assert(content.includes(name));
-                const parsed = JSON.parse(content);
-                assert(parsed.name === name);
-                done();
-            }).catch(done);
+    it("changes name", async () => {
+        const p = InMemoryProject.of({ path: "package.json", content: SimplePackageJson });
+        const desc = "some thing1";
+        await updatePackageJsonIdentification(desc, "0.0.0", "a", target)(p, fakeContext);
+        const content = p.findFileSync("package.json").getContentSync();
+        assert(content.includes(desc));
+        const parsed = JSON.parse(content);
+        assert(parsed.name === `@${target.owner}/${target.repo}`);
     });
 
-    it("changes version", done => {
-        const p = InMemoryProject.of({path: "package.json", content: SimplePackageJson });
+    it("changes version", async () => {
+        const p = InMemoryProject.of({ path: "package.json", content: SimplePackageJson });
         const version = "0.1.0";
-        updatePackageJsonIdentification("somename", "", version, "a", target)(p, fakeContext)
-            .then(() => {
-                const content = p.findFileSync("package.json").getContentSync();
-                assert(content.includes(version));
-                const parsed = JSON.parse(content);
-                assert(parsed.version === version);
-                done();
-            }).catch(done);
+        await updatePackageJsonIdentification("description of it", version, "a", target)(p, fakeContext);
+        const content = p.findFileSync("package.json").getContentSync();
+        assert(content.includes(version));
+        const parsed = JSON.parse(content);
+        assert(parsed.version === version);
     });
 
-    it("changes description", done => {
-        const p = InMemoryProject.of({path: "package.json", content: SimplePackageJson });
+    it("changes description", async () => {
+        const p = InMemoryProject.of({ path: "package.json", content: SimplePackageJson });
         const version = "0.1.0";
         const description = "whatever you say";
-        updatePackageJsonIdentification("somename", description, version, "a", target)(p, fakeContext)
-            .then(() => {
-                const content = p.findFileSync("package.json").getContentSync();
-                assert(content.includes(description));
-                const parsed = JSON.parse(content);
-                assert(parsed.description === description);
-                done();
-            }).catch(done);
+        await updatePackageJsonIdentification(description, version, "a", target)(p, fakeContext);
+        const content = p.findFileSync("package.json").getContentSync();
+        assert(content.includes(description));
+        const parsed = JSON.parse(content);
+        assert(parsed.description === description);
     });
 
-    it("changes author", done => {
-        const p = InMemoryProject.of({path: "package.json", content: SimplePackageJson });
+    it("changes author", async () => {
+        const p = InMemoryProject.of({ path: "package.json", content: SimplePackageJson });
         const version = "0.1.0";
-        updatePackageJsonIdentification("somename", "descr", version, "rod's chat ID", target)(p, fakeContext)
-            .then(() => {
-                const content = p.findFileSync("package.json").getContentSync();
-                assert(content.includes("Rod Johnson"));
-                const parsed = JSON.parse(content);
-                assert(parsed.author === "Rod Johnson");
-                done();
-            }).catch(done);
+        await updatePackageJsonIdentification("descr", version, "rod's chat ID", target)(p, fakeContext);
+        const content = p.findFileSync("package.json").getContentSync();
+        assert(content.includes("Rod Johnson"));
+        const parsed = JSON.parse(content);
+        assert(parsed.author === "Rod Johnson");
     });
 
 });

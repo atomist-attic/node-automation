@@ -26,25 +26,25 @@ import { NodeGeneratorParameters } from "../editor/node/nodeGenerator";
 import { nodeTransform } from "../editor/node/nodeTransform";
 
 /**
- * Creates an Atomist software delivery machine GitHub repository.
+ * Creates an Atomist automation GitHub repository.
  */
 @Parameters()
-export class SdmGeneratorParameters extends NodeGeneratorParameters {
+export class AutomationGeneratorParameters extends NodeGeneratorParameters {
 
     constructor() {
         super();
-        this.source.repo = "sample-sdm";
-        this.target.description = "an Atomist automation for software delivery";
+        this.source.repo = "automation-seed-ts";
+        this.target.description = "an Atomist automation";
     }
 }
 
-export function sdmGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<SdmGeneratorParameters> {
+export function automationGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<AutomationGeneratorParameters> {
     return generatorHandler(
         nodeTransform,
-        SdmGeneratorParameters,
-        "sdmGenerator",
+        AutomationGeneratorParameters,
+        "automationGenerator",
         {
-            intent: ["create software delivery machine", "create sdm"],
+            intent: ["create automation"],
             tags: ["node", "npm", "typescript"],
             projectPersister,
         });

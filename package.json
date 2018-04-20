@@ -1,6 +1,6 @@
 {
   "name": "@atomist/node-automation",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Atomist automations for Node.js",
   "author": "Atomist",
   "license": "Apache-2.0",
@@ -78,7 +78,7 @@
     "fmt": "tsfmt --replace",
     "git:info": "atomist git",
     "gql:copy": "copyfiles \"src/**/*.graphql\" build",
-    "gql:gen": "atomist gql-gen \"{graphql,src}/**/*.graphql\"",
+    "gql:gen": "atomist gql-gen --no-install \"{graphql,src}/**/*.graphql\"",
     "lint": "tslint --format verbose --project . --exclude \"{build,node_modules}/**\" \"**/*.ts\"",
     "lint:fix": "npm run lint -- --fix",
     "start": "atomist start --no-install --no-compile",
