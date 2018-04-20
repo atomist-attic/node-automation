@@ -14,16 +14,6 @@
  * limitations under the License.
  */
 
-import { Configuration } from "@atomist/automation-client";
-
-import { automationGenerator } from "./commands/generator/AutomationGenerator";
-import { sdmGenerator } from "./commands/generator/GithubSdmGenerator";
-import { configureLogzio } from "./util/logzio";
-
-export const configuration: Configuration = {
-    commands: [
-        automationGenerator,
-        sdmGenerator,
-    ],
-    postProcessors: [configureLogzio],
-};
+declare module "logzio-nodejs";
+declare module "serialize-error";
+declare module "winston-logzio";

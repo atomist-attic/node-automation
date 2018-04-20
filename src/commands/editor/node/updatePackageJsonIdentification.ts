@@ -2,18 +2,20 @@ import { HandlerContext, logger } from "@atomist/automation-client";
 import { doWithJson } from "@atomist/automation-client/project/util/jsonUtils";
 import { PersonByChatId } from "../../../typings/types";
 
-export function updatePackageJsonIdentification(appName: string,
-                                                description: string,
-                                                version: string,
-                                                screenName: string,
-                                                target: { owner: string, repo: string }) {
+export function updatePackageJsonIdentification(
+    description: string,
+    version: string,
+    screenName: string,
+    target: { owner: string, repo: string },
+) {
+
     return async (project, context) => {
         const author = await nameAuthor(context, screenName);
         logger.info("Updating JSON. Author is " + author);
 
         return doWithJson(project, "package.json", pkg => {
             const repoUrl = `https://github.com/${target.owner}/${target.repo}`;
-            pkg.name = appName;
+            pkg.name = `@${target.owner}/${target.repo}`;
             pkg.description = description;
             pkg.version = version;
             pkg.author = author;
@@ -31,7 +33,7 @@ export function updatePackageJsonIdentification(appName: string,
 
 async function nameAuthor(ctx: HandlerContext, screenName: string): Promise<string> {
     const personResult: PersonByChatId.Query = await ctx.graphClient.executeQueryFromFile(
-        "graphql/PersonQuery", {screenName})
+        "graphql/PersonQuery", { screenName })
         .catch(err => logger.warn("Unable to retrieve person: " + err));
     if (!personResult || !personResult.ChatId || personResult.ChatId.length === 0 || !personResult.ChatId[0].person) {
         logger.info("No person; defaulting author to blank");
