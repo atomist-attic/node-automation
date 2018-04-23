@@ -1,6 +1,6 @@
 {
   "name": "@atomist/node-automation",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Atomist automations for Node.js",
   "author": "Atomist",
   "license": "Apache-2.0",
