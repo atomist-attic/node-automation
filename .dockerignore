@@ -7,6 +7,8 @@
 .git*
 .npm*
 .travis.yml
+.atomist/kube/
+assets/kube/
 node_modules/
 build/test/
 build/typedoc/
