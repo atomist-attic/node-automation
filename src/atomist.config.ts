@@ -15,7 +15,6 @@
  */
 
 import { Configuration } from "@atomist/automation-client";
-
 import { automationGenerator } from "./commands/generator/AutomationGenerator";
 import { sdmGenerator } from "./commands/generator/GithubSdmGenerator";
 import { HelloAutomation } from "./commands/HelloAutomation";
