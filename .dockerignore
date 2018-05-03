@@ -7,7 +7,7 @@
 .git*
 .npm*
 .travis.yml
-.atomist/kube/
+.atomist/
 assets/kube/
 node_modules/
 build/test/
