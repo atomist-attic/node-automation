@@ -45,7 +45,7 @@ export function sdmGenerator(projectPersister: ProjectPersister = GitHubProjectP
         "sdmGenerator",
         {
             intent: ["create software delivery machine", "create sdm"],
-            tags: ["node", "npm", "typescript"],
+            tags: ["node", "npm", "typescript", "sdm", "atomist"],
             projectPersister,
         });
 }
