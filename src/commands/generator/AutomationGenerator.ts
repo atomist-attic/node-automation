@@ -46,7 +46,7 @@ export function automationGenerator(projectPersister: ProjectPersister = GitHubP
         "automationGenerator",
         {
             intent: ["create automation"],
-            tags: ["node", "npm", "typescript", "automation"],
+            tags: ["node", "npm", "typescript"],
             projectPersister,
         });
 }
