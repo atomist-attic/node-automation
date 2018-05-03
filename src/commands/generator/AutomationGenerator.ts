@@ -26,7 +26,8 @@ import { NodeGeneratorParameters } from "../editor/node/nodeGenerator";
 import { nodeTransform } from "../editor/node/nodeTransform";
 
 /**
- * Creates an Atomist automation client GitHub repository.
+ * Creates an Atomist automation client GitHub repository using the
+ * automation-seed.
  */
 @Parameters()
 export class AutomationGeneratorParameters extends NodeGeneratorParameters {
