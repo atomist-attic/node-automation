@@ -3,7 +3,6 @@
 .vscode/
 **/*~
 **/.#*
-.dockerignore
 .git*
 .npm*
 .travis.yml

@@ -32,11 +32,17 @@ export function updatePackageJsonIdentification(
 }
 
 async function nameAuthor(ctx: HandlerContext, screenName: string): Promise<string> {
-    const personResult: PersonByChatId.Query = await ctx.graphClient.query({
-        name: "person",
-        variables: { screenName },
-    })
-        .catch(err => logger.warn("Unable to retrieve person: " + err));
+    let personResult: PersonByChatId.Query;
+    try {
+        personResult = await ctx.graphClient.query({
+            name: "person",
+            variables: { screenName },
+        });
+    } catch (err) {
+        err.message = "Unable to retrieve person: " + err.message;
+        logger.warn(err.message);
+        return Promise.reject(err);
+    }
     if (!personResult || !personResult.ChatId || personResult.ChatId.length === 0 || !personResult.ChatId[0].person) {
         logger.info("No person; defaulting author to blank");
         return "";

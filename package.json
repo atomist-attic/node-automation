@@ -28,6 +28,7 @@
     "config": "^1.30.0",
     "isbinaryfile": "^3.0.2",
     "jszip": "^3.1.5",
+    "lodash": "^4.17.10",
     "logzio-nodejs": "^0.4.10",
     "serialize-error": "^2.1.0",
     "strip-ansi": "^4.0.0",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@types/app-root-path": "^1.2.4",
     "@types/config": "0.0.33",
+    "@types/lodash": "^4.14.108",
     "@types/mocha": "^2.2.48",
     "@types/node": "^8.10.8",
     "@types/power-assert": "^1.5.0",
@@ -53,9 +55,9 @@
     "tmp": "0.0.33",
     "ts-node": "^3.3.0",
     "tslint": "^5.9.1",
-    "typedoc": "^0.9.0",
-    "typescript": "2.5.3",
-    "typescript-formatter": "^6.0.0"
+    "typedoc": "^0.11.1",
+    "typescript": "^2.8.3",
+    "typescript-formatter": "^7.2.0"
   },
   "directories": {
     "test": "test"
