@@ -78,7 +78,7 @@
             }
           }
         ],
-        "terminationGracePeriodSeconds": 180
+        "terminationGracePeriodSeconds": 30
       }
     }
   }
