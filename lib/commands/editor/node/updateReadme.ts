@@ -22,7 +22,7 @@ export function updateReadme(appName: string, description: string) {
         try {
             const readmeFile = await project.getFile("README.md");
             const content = await readmeFile.getContent();
-            const newContent = content.replace(/^\s*#.*/, `# ${appName}\n\n ${description}`);
+            const newContent = content.replace(/^\s*#.*/, `# ${appName}\n\n${description}`);
             await readmeFile.setContent(newContent);
         } catch (e) {
             logger.warn(`Did not update README for ${appName}: ${e.message}`);

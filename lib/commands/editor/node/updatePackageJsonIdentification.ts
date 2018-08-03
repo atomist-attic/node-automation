@@ -65,8 +65,8 @@ async function nameAuthor(ctx: HandlerContext, screenName: string): Promise<stri
         return Promise.reject(err);
     }
     if (!personResult || !personResult.ChatId || personResult.ChatId.length === 0 || !personResult.ChatId[0].person) {
-        logger.info("No person; defaulting author to blank");
-        return "";
+        logger.info("No person; defaulting author to screenName");
+        return screenName;
     }
     const person = personResult.ChatId[0].person;
     if (person.forename && person.surname) {
@@ -78,5 +78,5 @@ async function nameAuthor(ctx: HandlerContext, screenName: string): Promise<stri
     if (person.emails.length > 0) {
         return person.emails[0].address;
     }
-    return "";
+    return screenName;
 }

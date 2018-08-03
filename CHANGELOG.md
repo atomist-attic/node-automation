@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 [Unreleased]: https://github.com/atomist/node-automation/compare/0.2.0...HEAD
 
+### Changed
+
+-   Fall back to screen name if person query returns nothing.
+
+### Fixed
+
+-   Correct spacing when updating README.
+
 ## [0.2.0][]
 
 [0.2.0]: https://github.com/atomist/node-automation/compare/0.1.3...0.2.0
