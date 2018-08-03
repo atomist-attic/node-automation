@@ -1,5 +1,26 @@
-import { HandlerContext, logger } from "@atomist/automation-client";
+/*
+ * Copyright © 2018 Atomist, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import {
+    HandlerContext,
+    logger,
+} from "@atomist/automation-client";
+import { Project } from "@atomist/automation-client/project/Project";
 import { doWithJson } from "@atomist/automation-client/project/util/jsonUtils";
+
 import { PersonByChatId } from "../../../typings/types";
 
 export function updatePackageJsonIdentification(
@@ -9,7 +30,7 @@ export function updatePackageJsonIdentification(
     target: { owner: string, repo: string },
 ) {
 
-    return async (project, context) => {
+    return async (project: Project, context: HandlerContext) => {
         const author = await nameAuthor(context, screenName);
         logger.debug("Updating JSON. Author is " + author);
 
@@ -57,4 +78,5 @@ async function nameAuthor(ctx: HandlerContext, screenName: string): Promise<stri
     if (person.emails.length > 0) {
         return person.emails[0].address;
     }
+    return "";
 }

@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
+import * as assert from "power-assert";
+
 import { HandlerContext } from "@atomist/automation-client";
 import { SimpleProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
-import * as assert from "power-assert";
-import { updatePackageJsonIdentification } from "../../../../src/commands/editor/node/updatePackageJsonIdentification";
-import { PersonByChatId } from "../../../../src/typings/types";
+
+import { updatePackageJsonIdentification } from "../../../../lib/commands/editor/node/updatePackageJsonIdentification";
+import { PersonByChatId } from "../../../../lib/typings/types";
 
 describe("updatePackageJsonIdentification", () => {
 
