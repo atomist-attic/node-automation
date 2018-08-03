@@ -27,5 +27,6 @@ export const configuration: Configuration = {
         automationGenerator,
         sdmGenerator,
     ],
+    events: [],
     postProcessors: [configureLogzio],
 };
