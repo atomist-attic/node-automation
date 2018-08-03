@@ -24,7 +24,7 @@ import { updateAtomistTeam } from "../../../../lib/commands/editor/node/updateAt
 describe("update Atomist Team", () => {
 
     const fakeContext = {
-        teamId: "TEAMYAY",
+        workspaceId: "TEAMYAY",
     } as any as HandlerContext;
 
     it("changes the team", done => {
@@ -35,7 +35,7 @@ describe("update Atomist Team", () => {
 export const configuration: Configuration = {
     name: pj.name,
     version: pj.version,
-    teamIds: ["T5964N9B7"], // <-- run @atomist pwd in your slack team to obtain the team id
+    workspaceIds: ["T5964N9B7"], // <-- run @atomist pwd in your slack team to obtain the team id
     commands: assembled.commandHandlers.concat([
         HelloWorld,
         () => affirmationEditor,
@@ -47,13 +47,12 @@ export const configuration: Configuration = {
 };
 `,
         });
-        const ec = `teamIds: ["TEAMYAY"], // <-- run @atomist pwd in your slack team to obtain the team id`;
         updateAtomistTeam(p, fakeContext)
             .then(
                 edited => edited.findFile("src/atomist.config.ts"))
             .then(f => f.getContent())
             .then(content => {
-                assert(content.includes(ec),
+                assert(content.includes(`workspaceIds: ["TEAMYAY"], // <-- run @atomist pwd in your slack team to obt`),
                     "content: " + content);
             })
             .then(done, done);
@@ -67,7 +66,7 @@ export const configuration: Configuration = {
 export const configuration: Configuration = {
     name: pj.name,
     version: pj.version,
-    teamIds: [
+    workspaceIds: [
         //  "T1JVCMVH7",
         "T5964N9B7",    // spring-team
         //  "T29E48P34",    // Atomist community
@@ -88,7 +87,7 @@ export const configuration: Configuration = {
                 edited => edited.findFile("src/atomist.config.ts"))
             .then(f => f.getContent())
             .then(content => {
-                assert(content.includes(`teamIds: ["TEAMYAY"],\n    commands:`),
+                assert(content.includes(`workspaceIds: ["TEAMYAY"],\n    commands:`),
                     "content: " + content);
             })
             .then(done, done);

@@ -14,14 +14,37 @@
  * limitations under the License.
  */
 
-import { HandlerContext } from "@atomist/automation-client";
-import { Project } from "@atomist/automation-client/project/Project";
+import {
+    HandlerContext,
+    logger,
+} from "@atomist/automation-client";
+import {
+    File,
+} from "@atomist/automation-client/project/File";
+import {
+    Project,
+} from "@atomist/automation-client/project/Project";
+import * as path from "path";
 
 export async function updateAtomistTeam(project: Project, ctx: HandlerContext) {
-    const atomistConfigFile = await project.findFile("src/atomist.config.ts");
-    const content = await atomistConfigFile.getContent();
-    const newContent = content.replace(/teamIds:\s*\[[^\]]*]/,
-        `teamIds: ["${ctx.teamId}"]`);
-    await atomistConfigFile.setContent(newContent);
+    try {
+        let atomistConfigFile: File;
+        for (const dir of ["src", "lib"]) {
+            atomistConfigFile = await project.getFile(path.join(dir, "atomist.config.ts"));
+            if (atomistConfigFile) {
+                break;
+            }
+        }
+        if (!atomistConfigFile) {
+            return project;
+        }
+        const content = await atomistConfigFile.getContent();
+        const newContent = content
+            .replace(/\bworkspaceIds\s*:\s*\[[^\]]*]/, `workspaceIds: ["${ctx.workspaceId}"]`)
+            .replace(/\bteamIds\s*:\s*\[[^\]]*]/, `workspaceIds: ["${ctx.workspaceId}"]`);
+        await atomistConfigFile.setContent(newContent);
+    } catch (e) {
+        logger.warn(`Failed to update Atomist workspace: ${e.message}`);
+    }
     return project;
 }
