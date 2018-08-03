@@ -11,7 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+-   Reorganize to be more standard Node.js package.
 -   Fall back to screen name if person query returns nothing.
+-   SDM seed is now atomist/seed-sdm.
 
 ### Fixed
 

@@ -33,7 +33,7 @@ export class SdmGeneratorParameters extends NodeGeneratorParameters {
 
     constructor() {
         super();
-        this.source.repo = "sample-sdm";
+        this.source.repo = "seed-sdm";
         this.target.description = "an Atomist automation for software delivery";
     }
 }
