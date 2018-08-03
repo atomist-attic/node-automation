@@ -26,8 +26,8 @@ import { updateReadme } from "./updateReadme";
 export function nodeTransform(params: NodeGeneratorParameters): AnyProjectEditor<NodeGeneratorParameters> {
     return chainEditors(
         updatePackageJsonIdentification(params.target.description,
-            params.version, params.screenName, params.target),
-        updateReadme(params.target.repo, params.target.description),
+            params.version, params.screenName, params.target.repoRef),
+        updateReadme(params.target.repoRef.repo, params.target.description),
         updateAtomistTeam,
         updatePackageLock,
     );

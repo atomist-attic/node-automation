@@ -15,10 +15,11 @@
  */
 
 import { Configuration } from "@atomist/automation-client";
+import { configureLogzio } from "@atomist/automation-client-ext-logzio";
+
 import { automationGenerator } from "./commands/generator/AutomationGenerator";
 import { sdmGenerator } from "./commands/generator/GithubSdmGenerator";
 import { HelloAutomation } from "./commands/HelloAutomation";
-import { configureLogzio } from "./util/logzio";
 
 export const configuration: Configuration = {
     commands: [
